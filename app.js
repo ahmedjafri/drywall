@@ -25,25 +25,12 @@ app.config = config;
 app.server = http.createServer(app);
 
 app.db = {};
-app.db.sequelize = new Sequelize(
-    config.db.databaseName, 
-    config.db.username, 
-    config.db.password, 
-    {
-      host: 'localhost',
-      dialect: 'mysql',
-      pool: {
-          max: 5,
-          min: 0,
-          idle: 10000
-      }
-    }
-);
 
-app.db.Sequelize = Sequelize;
-
-//config data models
-require('./models')(app, app.db);
+app.useDB = function(db){ // pass in the sequelize instance to initialize models
+  app.db = db;
+  //config data models
+  require('./models')(app, app.db);
+};
 
 //settings
 app.disable('x-powered-by');
