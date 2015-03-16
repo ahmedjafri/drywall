@@ -99,7 +99,3 @@ app.utility.sendmail = require('./util/sendmail');
 app.utility.slugify = require('./util/slugify');
 app.utility.workflow = require('./util/workflow');
 
-//listen up
-app.server.listen(app.config.port, function(){
-  //and... we're live
-});
