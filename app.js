@@ -53,12 +53,10 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(csrf({ cookie: { signed: true } }));
 helmet(app);
 
 //response locals
 app.use(function(req, res, next) {
-  res.cookie('_csrfToken', req.csrfToken());
   res.locals.user = {};
   res.locals.user.defaultReturnUrl = req.user && req.user.defaultReturnUrl();
   res.locals.user.username = req.user && req.user.username;
@@ -74,8 +72,10 @@ app.locals.cacheBreaker = 'br34k-01';
 //setup passport
 require('./passport')(app, passport);
 
-//setup routes
-require('./routes')(app, passport);
+app.addRoutes = function() {
+  //setup routes
+  require('./routes')(app, passport);
+}
 
 //custom (friendly) error handler
 app.use(require('./views/http/index').http500);
